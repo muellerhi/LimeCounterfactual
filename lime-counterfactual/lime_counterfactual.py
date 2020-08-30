@@ -1,14 +1,12 @@
 """
 Function for explaining classified instances using evidence counterfactuals.
 """
-
-"""
-Import libraries 
-"""
-from lime.lime_text import LimeTextExplainer
 import time
+
 import numpy as np
-    
+from lime.lime_text import LimeTextExplainer
+
+
 class LimeCounterfactual(object):
     """Class for generating evidence counterfactuals for classifiers on behavioral/text data"""
     
