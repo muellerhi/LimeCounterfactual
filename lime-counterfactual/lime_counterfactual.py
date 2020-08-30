@@ -9,9 +9,9 @@ from lime.lime_text import LimeTextExplainer
 
 class LimeCounterfactual(object):
     """Class for generating evidence counterfactuals for classifiers on behavioral/text data"""
-    
-    def __init__(self, c_fn, classifier_fn, vectorizer, threshold_classifier, 
-                 feature_names_full, max_features=30, class_names = ['1','0'], 
+
+    def __init__(self, classifier_fn, vectorizer, threshold_classifier,
+                 feature_names_full, max_features=30, class_names=['1', '0'],
                  time_maximum=120):
 
         """ Init function
@@ -53,8 +53,7 @@ class LimeCounterfactual(object):
             time_maximum: [int] maximum time allowed to generate explanations,
             expressed in minutes. Default is set to 2 minutes (120 seconds).
         """
-        
-        self.c_fn = c_fn
+
         self.classifier_fn = classifier_fn
         self.class_names = class_names
         self.max_features = max_features
@@ -106,12 +105,12 @@ class LimeCounterfactual(object):
         instance_sparse = self.vectorizer.transform([instance])
         nb_active_features = np.size(instance_sparse)
         score_predicted = self.classifier_fn(instance_sparse)
-        explainer = LimeTextExplainer(class_names = self.class_names)
-        
-        classifier = self.c_fn.predict_proba
-        
-        exp = explainer.explain_instance(instance, classifier, num_features=nb_active_features)
-        explanation_lime = exp.as_list()
+        explainer = LimeTextExplainer(class_names=self.class_names)
+
+        classifier = self.classifier_fn
+
+        exp = explainer.explain_instance(instance, classifier, num_features=nb_active_features, labels=(0,))
+        explanation_lime = exp.as_list(label=0)
         
         """
         indices_features_lime = []
